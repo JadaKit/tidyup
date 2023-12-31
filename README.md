@@ -11,8 +11,6 @@
 - Jinja2
 - django forms
 
-
-
 ## Initialization
 
 To get started with this project, follow these steps:
@@ -33,10 +31,23 @@ Install all the dependencies
 pip install -r requirements.txt
 ```
 
-Run command to start development server
+Run commands
 ```bash
+# Migrate data to database
+python manage.py migrate
+```
+
+```bash
+# Load dump data to database for testing
+python manage.py loaddata data_dump.json
+```
+
+```bash
+# Runserver
 python manage.py runserver
 ```
+Visit local development server
+[http://127.0.0.1:8000](http://127.0.0.1:8000).
 
 admin users
 ```bash
