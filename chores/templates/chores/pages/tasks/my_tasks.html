@@ -1,0 +1,27 @@
+{% extends "chores/layout.html" %}
+
+{% block title %}Tidy up - My Tasks{% endblock %}
+
+{% block body %}
+<h2>Tasks</h2>
+
+<div class="list-group" id="list-tab" role="tablist">
+  {% for task in tasks %}
+    <a class="list-group-item list-group-item-action mt-1" href="{% url "tasks" task.id %}">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-2">{{ task.title }}</h5>
+        <div>
+          <small>Assignee: <span class="badge bg-secondary">{{ task.assigned_to }}</span></small> <br>
+          <small>Reporter: {{ task.reporter }}</small>
+        </div>
+      </div>
+      <hr>
+      <p class="mb-1"> {% if task.description %}{{ task.description }} {% else %}No Description{% endif %}</p>
+      <small>Status: {{ task.status }}</small>
+    </a>
+    {% empty %}
+    No Tasks available
+  {% endfor %}
+</div>
+
+{% endblock %}

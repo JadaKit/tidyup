@@ -1,0 +1,61 @@
+{% extends "chores/layout.html" %}
+
+{% block title %}Tidy up - {{ task.title }}{% endblock %}
+
+{% block body %}
+
+
+    <div class="card">
+        <form action="{% url "tasks" task.id %}" method="post">
+            {% csrf_token %}
+
+            <div class="card-header">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control-plaintext fs-5" type="text" name="title" id="title_input_id" value="{{ task.title }}">
+                    </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-row-reverse">
+                    <div class="form-floating mx-3">
+                        <select name="status" class="form-select" id="assignee_id" aria-label="Status">
+                            {% for status_key, status_value  in status_options %}
+                                <option {% if status_key == task.status %}selected{% endif %} value="{{ status_key }}">{{ status_value }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="assignee_id">Status</label>
+                    </div>
+                    <div class="form-floating mx-3">
+                        <select name="assignee_id" class="form-select" id="assignee_id" aria-label="Assignee">
+                            {% for user in assigned_to_options %}
+                                <option {% if user.id == task.assigned_to.id %}selected{% endif %} value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="assignee_id">Assignee</label>
+                    </div>
+                    <div name-"reporter" class="form-floating mx-3">
+                        <select class="form-select" id="reporter_id" disabled aria-label="Reporter">
+                            <option selected value="{{ task.reporter.id }}">{{ task.reporter.username }}</option>
+                        </select>
+                        <label for="reporter_id">Reporter</label>
+                    </div>
+                </div>
+                <small class="text-muted mb-3">Description:</small>
+                <div class="form-floating">
+                    {% if task.description %}
+                        <textarea class="form-control-plaintext w-100" name="description" rows="20">{{ task.description }}</textarea>
+                    {% else %}
+                        <textarea class="form-control-plaintext w-100" name="description" rows="20"></textarea>
+                    {% endif %}
+                </div>
+                <div class="d-flex flex-row-reverse my-3">
+                    <small class="text-muted mx-2">Updated: {{ task.updated | timesince }} ago</small>
+                    <small class="text-muted mx-2">Created:  {{ task.created | timesince }} ago</small>
+                </div>
+                <div class="d-flex flex-row-reverse">
+                    <button class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </form>
+      </div>
+
+{% endblock %}

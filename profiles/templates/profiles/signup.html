@@ -1,0 +1,51 @@
+{% extends 'profiles/layout.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+  <h2>Sign Up</h2>
+  <div class="px-5">
+    <form method="post" target="{% url "signup" %}" class="pt-5">
+      {% csrf_token %}
+      <div class="row">
+          <div class="col mb-3">
+            <label for="first_name_input" class="form-label">{{ form.first_name.label_tag }}</label>
+            {{ form.first_name }}
+          </div>
+          <div class="col mb-3">
+            <label for="last_name_input" class="form-label">{{ form.last_name.label_tag }}</label>
+            {{ form.last_name }}
+          </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="username_input" class="form-label">{{ form.username.label_tag }}</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <small class="form-text text-danger">{{ form.username.errors }}</small>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
+        <label for="password_input" class="form-label">{{ form.password.label_tag }}</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+            <small class="form-text text-danger">{{ form.password.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="mb-3">
+        <label for="room_pass_input" class="form-label">{{ form.room_pass.label_tag }} (optional)</label>
+        {{ form.room_pass }}
+        <small class="text-muted">You can add room pass to request entry, otherwise new room will be assigned to you</small>
+        {% if form.room_pass.errors %}
+            <small class="form-text text-danger">{{ form.room_pass.errors }}</small>
+        {% endif %}
+      </div>
+      {% include "profiles/components/non_field_errrors.html" %}
+      <p><a href="{% url "login_view" %}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a></p>
+      <div class="mb-3">
+        <button class="btn btn-primary " type="submit">Signup</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

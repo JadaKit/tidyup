@@ -1,0 +1,83 @@
+{% extends "chores/layout.html" %}
+
+{% block title %}Tidy up - My Room{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the {{room.name}}</h1>
+    <input type="text" id="copyText" value="{{ request.user.room.room_pass }}" hidden>
+    <p>You can add tasks and assign to roommates</p>
+    <p>Room Pass, click to copy: <a id="room_pass_id" href="#" onclick="copyToClipboard()">{{ request.user.room.room_pass }}</a></p>
+    {% if entry_approved %}
+    <button class="btn btn-sm btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#create-task-modal">+ Task</button>
+    <div class="row">
+        <div class="col">
+          <h2>Tasks</h2>
+
+          <div class="list-group" id="list-tab" role="tablist">
+            {% for task in tasks %}
+              <a class="list-group-item list-group-item-action mt-1" href="{% url "tasks" task.id %}">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-2">{{ task.title }}</h5>
+                  <div>
+                    <small>Assignee: <span class="badge bg-secondary">{{ task.assigned_to }}</span></small> <br>
+                    <small>Reporter: {{ task.reporter }}</small>
+                  </div>
+                </div>
+                <hr>
+                <p class="mb-1"> {% if task.description %}{{ task.description }} {% else %}No Description{% endif %}</p>
+                <small>Status: {{ task.status }}</small>
+              </a>
+              {% empty %}
+              No Tasks available
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="col">
+            <h2 class="mt-3">Roommates</h2>
+
+            <ul class="list-group">
+              {% for roommate in roommates %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{roommate.username}}
+                </li>
+                {% empty %}
+                <p>You may need to approve someone or add </p>
+              {% endfor %}
+            </ul>
+
+            <h2 class="mt-5">People - Requsted Entry</h2>
+
+            <ul class="list-group">
+              {% for roommate in roommates_approval_required %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{roommate.username}}
+                  <a href="{% url "approve-user" roommate.id %}" class="btn btn-sm bg-primary rounded-pill text-decoration-none" style="color: white;">Approve</a>
+                </li>
+                {% empty %}
+                <p>No one requested to join</p>
+              {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% else %}
+    <p class="fs-5">Please wait for someone in room to approve your entry</p>
+    {% endif %}
+    {% include "chores/components/create_task.html" %}
+    {% include "chores/components/add_roommate.html" %}
+    <script>
+      function copyToClipboard() {
+        // Select the text field
+        var copyText = document.getElementById("copyText");
+        copyText.select();
+  
+        // Use the Clipboard API to copy the selected text to the clipboard
+        navigator.clipboard.writeText(copyText.value).then(function() {
+          console.log("Text copied to clipboard");
+          
+        }).catch(function(err) {
+          console.error("Unable to copy text to clipboard", err);
+        });
+      }
+    </script>
+{% endblock %}

@@ -1,0 +1,28 @@
+
+  <!-- Modal -->
+  <div class="modal modal-xl fade" id="add-roommate-modal" tabindex="-1" aria-labelledby="add-roommate-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="task-modal-title">Add Roommate</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url "add-roommate" %}" method="post">
+            <div class="modal-body">
+                {% csrf_token %}
+                <div class="mt-3">
+                    {{ add_roommate_form.roommate.label_tag }}
+                    {{ add_roommate_form.roommate }}
+                    {% if add_roommate_form.roommate.errors %}
+                        <small class="form-text text-danger">{{ add_roommate_form.roommate.errors }}</small>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>

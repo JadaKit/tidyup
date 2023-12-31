@@ -1,0 +1,31 @@
+{% extends 'profiles/layout.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+  <h2>Login</h2>
+  <div class="px-5">
+    <form method="post" target="{% url "login_view" %}" class="pt-5">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="username_input" class="form-label">{{ form.username.label_tag }}</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <small class="form-text text-danger">{{ form.username.errors }}</small>
+        {% endif %}
+      </div>
+      <div class="mb-3">
+        <label for="password_input" class="form-label">{{ form.password.label_tag }}</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+            <small class="form-text text-danger">{{ form.password.errors }}</small>
+        {% endif %}
+      </div>
+      {% include "profiles/components/non_field_errrors.html" %}
+      <p><a href="{% url "signup" %}" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Signup</a></p>
+      <div class="mb-3">
+        <button class="btn btn-primary " type="submit">Login</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
